@@ -6,38 +6,58 @@ const registerUser = async (req,res) => {
         // await user.save()
         // res.send(user);
 
-        const {username, email, password} = req.body
+        const {firstname, lastname, email, password} = req.body
 
-        if(!username){
-          res.status(409).send({message:'username is not present', status: 409})
+        if(!firstname || !lastname){
+          return res.status(409).send({message:'firstname and lastname required', status: 409})
         }
 
         if(!email){
-          res.status(409).send({message: 'email is not present', status: 409})
+          return res.status(409).send({message: 'email is not present', status: 409})
         }
 
         if(!password){
-          res.status(409).send({message: 'Please provide password', status: 409})
+          return res.status(409).send({message: 'Please provide password', status: 409})
         }
     
         const alreadyUser = await User.findOne({email})
         if(alreadyUser){
-          res.status(409).send({message:'User with this email already Exist, Please login with different email', status: 409})
+          return res.status(409).send({message:'User with this email already Exist, Please login with different email', status: 409})
+        }
+
+        let usernameCreated = true
+        let username = ''
+        let count = 1;
+        let trythis = firstname.toLowerCase()+lastname.toLowerCase()
+        while(usernameCreated){
+          const isUser = await User.findOne({username: trythis})
+          if(!isUser){
+            username = trythis
+            usernameCreated = false
+          }
+          trythis = firstname.toLowerCase()+lastname.toLowerCase()+count
+          count+=1
         }
     
         encryptedUserPassword = await bcrypt.hash(password,10)
     
         const newUser = new User({
-          username,email,password: encryptedUserPassword
+          firstname,lastname,username,email,password: encryptedUserPassword
         })
         await newUser.save()
-        const resmsg = {message: "User Created Successfully",username,email}
-        console.log(newUser)
-        res.status(200).send({status: 200,message: "User Created Successfully",newUser})
+        const resmsg = {
+          message: "User Created Successfully!!",
+          username: `Please use this Username: ${username}`,
+          firstname,
+          lastname,
+          email
+        }
+        console.log(resmsg)
+        return res.status(200).send(resmsg)
 
     }catch (error){
       console.log(error)
-      res.status(500).send({error: 'Something went wrong'});
+      return res.status(500).send({error: 'Something went wrong'});
     }
 }
 

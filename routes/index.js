@@ -10,7 +10,6 @@ const { getOneUsers } = require('./userlogin/getOneUser')
 
 const app = express()
 
-//Public request server logger
 app.use(reqLogger)
 
 //Public Route
@@ -21,7 +20,8 @@ app.post('/register', async (req,res) => registerUser(req, res))
 
 app.post('/login', async (req, res) => loginUser(req,res));
 
-// Private request server logger
+
+//Authenticatoin on for below apis
 app.use(auth)
 
 //Private Route

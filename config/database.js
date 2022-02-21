@@ -15,7 +15,7 @@ exports.connect = () => {
 
     process.on('SIGINT', function() {   
         mongoose.connection.close(function () { 
-          console.log('Mongoose default connection disconnected through app termination'); 
+          console.log('Database Disconnected SUCCESSFUL...'); 
           process.exit(0); 
         }); 
     });

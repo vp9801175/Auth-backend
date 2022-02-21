@@ -33,7 +33,7 @@ const loginUser = async (req,res) => {
         return res.status(200).send(checkUser)
     } catch (error) {
         console.log(error);
-        res.status(500).send(error)
+        return res.status(500).send(error)
     }
 }
 
