@@ -3,7 +3,6 @@ const jwt = require('jsonwebtoken')
 const verifyToken = (req,res,next) => {
     try {
         var token = req.headers.authorization
-
         if(!token){
             return res.status(400).send({status: 400,message: 'Please provide authorization token'})
         }
