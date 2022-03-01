@@ -1,2 +1,2 @@
 # Auth-backend
-Authenticating and authorising private routes with JWT token.
+Authenticating and Authorizing private routes with JWT token.
